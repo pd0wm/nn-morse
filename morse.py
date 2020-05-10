@@ -3,7 +3,6 @@
 from scipy import signal
 import numpy as np
 import random
-from collections import defaultdict
 
 SAMPLE_FREQ = 2000  # 2 Khz
 

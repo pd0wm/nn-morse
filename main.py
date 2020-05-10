@@ -114,6 +114,7 @@ if __name__ == "__main__":
     model = Net(num_tags, spectrogram_size).to(device)
     print("Number of params", model.count_parameters())
 
+    # Lower learning rate to 1e-4 after about 1500 epochs
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     ctc_loss = nn.CTCLoss()
 
@@ -126,8 +127,9 @@ if __name__ == "__main__":
 
     random.seed(0)
 
-    epoch = 560
+    epoch = 0
 
+    # Resume training
     if epoch != 0:
         model.load_state_dict(torch.load(f"models/{epoch:06}.pt", map_location=device))
 

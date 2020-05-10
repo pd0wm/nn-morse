@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 
-import numpy as np
-from scipy import signal
-import scipy.io.wavfile
 import argparse
 
-from morse import SAMPLE_FREQ, get_spectrogram, ALPHABET
-from main import prediction_to_str, num_tags, Net
 import matplotlib.pyplot as plt
-
+import numpy as np
+import scipy.io.wavfile
 import torch
+from scipy import signal
 
+from main import Net, num_tags, prediction_to_str
+from morse import ALPHABET, SAMPLE_FREQ, get_spectrogram
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -19,6 +18,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     rate, data = scipy.io.wavfile.read(args.input)
+
+    # Resample and rescale
     length = len(data) / rate
     new_length = int(length * SAMPLE_FREQ)
 
@@ -26,23 +27,25 @@ if __name__ == "__main__":
     data = data.astype(np.float32)
     data /= np.max(np.abs(data))
 
+    # Create spectrogram
     spec = get_spectrogram(data)
     spec_orig = spec.copy()
     spectrogram_size = spec.shape[0]
 
+    # Load model
     device = torch.device("cpu")
-
-    spec = torch.from_numpy(spec)
-    spec = spec.permute(1, 0)
-    spec = spec.unsqueeze(0)
-
     model = Net(num_tags, spectrogram_size)
     model.load_state_dict(torch.load(args.model, map_location=device))
     model.eval()
 
+    # Run model on audio
+    spec = torch.from_numpy(spec)
+    spec = spec.permute(1, 0)
+    spec = spec.unsqueeze(0)
     y_pred = model(spec)
     y_pred_l = np.exp(y_pred[0].tolist())
 
+    # Convert prediction into string
     # TODO: proper beam search
     m = torch.argmax(y_pred[0], 1)
     print(prediction_to_str(m))
