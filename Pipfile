@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+autoflake = "*"
+
+[packages]
+torch = "*"
+torchvision = "*"
+numpy = "*"
+matplotlib = "*"
+tensorboard = "*"
+tqdm = "*"
+pytorch-ignite = "*"
+scipy = "*"
+
+[requires]
+python_version = "3.7"
