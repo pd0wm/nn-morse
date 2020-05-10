@@ -1,4 +1,4 @@
-# Neural Network morse decoder
+# Decode morse code using a neural network
 Use a neural network to decode morse code! The input is preprocessed by taking the FFT in 20 ms windows. These inputs go into a few dense layers followed by an LSTM. The network does not use time based convolutions on the input, so it can be used in a streaming fashion before all the audio is available.
 
 
