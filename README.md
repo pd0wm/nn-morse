@@ -5,7 +5,7 @@ Use a neural network to decode morse code! The input is preprocessed by taking t
 # Training
 Run `./main.py`. Open tensorboard to view progess. The network will converge after a few thousand epochs.
 
-The training uses a realistic morse code generator. It will simulate different speeds, noise levels and inconsistencies in timing. See `morse.py` for more details.
+The training uses a realistic morse code generator. It will simulate different speeds, frequency, noise levels and inconsistencies in timing. See `morse.py` for more details.
 
 # Test
 Run `./decode_audio.py --model models/000690.pt audio/hello_world.wav`. This will print the prediction, and show a plot of the spectrogram and tokens as predicted by the model.
